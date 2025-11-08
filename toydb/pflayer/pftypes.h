@@ -1,4 +1,5 @@
 /* pftypes.h: declarations for Paged File interface */
+#include "pf.h"
 
 /**************************** File Page Decls *********************/
 /* Each file contains a header, which is a integer pointing
@@ -81,3 +82,8 @@ extern PFbufGet();
 extern PFbufUnfix();
 extern PFbufalloc();
 extern PFbufReleaseFile();
+/* Buffer statistics (defined in buf.c) */
+extern unsigned long logical_reads;
+extern unsigned long logical_writes;
+extern unsigned long physical_reads;
+extern unsigned long physical_writes;
