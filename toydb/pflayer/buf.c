@@ -4,6 +4,8 @@ PFbufPrint() */
 #include <stdio.h>
 #include "pf.h"
 #include "pftypes.h"
+
+int PF_BUFFER_SIZE = PF_MAX_BUFS;
 /* Access policy info from PF layer */
 extern int PF_GetPolicy();   /* (int fd) */
 
@@ -144,7 +146,7 @@ int error;		/* error value returned*/
 		*bpage = PFfreebpage;
 		PFfreebpage = (*bpage)->nextpage;
 	}
-	else if (PFnumbpage < PF_MAX_BUFS){
+	else if (PFnumbpage < PF_BUFFER_SIZE){
 		/* We have not reached max buffer limit, so
 		malloc() a new one */
 		if ((*bpage=(PFbpage *)malloc(sizeof(PFbpage)))==NULL){
@@ -522,4 +524,13 @@ PFbpage *bpage;
 				bpage->fd,bpage->page,(int)bpage->fixed,
 				(int)bpage->dirty,(int)&bpage->fpage);
 	}
+}
+void PF_PrintStats()
+{
+    printf("\n--- Buffer Statistics ---\n");
+    printf("Logical Reads : %lu\n", logical_reads);
+    printf("Logical Writes: %lu\n", logical_writes);
+    printf("Physical Reads: %lu\n", physical_reads);
+    printf("Physical Writes: %lu\n", physical_writes);
+    printf("--------------------------\n");
 }

@@ -41,3 +41,4 @@ extern void PF_PrintError();
 /* Extended PF interface for replacement policy support */
 extern int PF_OpenFileEx();   /* (char *fname, int policy) */
 extern int PF_GetPolicy();    /* (int fd) */
+extern void PF_PrintStats();

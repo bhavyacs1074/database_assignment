@@ -2,12 +2,15 @@
 #include <stdio.h>
 #include "pf.h"
 #include "pftypes.h"
+/* extern global statistics from buffer manager */
+extern int logical_reads, logical_writes, physical_reads, physical_writes;
 
 #define FILE1	"file1"
 #define FILE2	"file2"
 
 main()
 {
+PF_SetBufferSize(25);   /* you can test 5, 10, 20, etc. */
 int error;
 int i;
 int pagenum,*buf;
@@ -43,17 +46,18 @@ int fd1,fd2;
 
 
 	/* open both files */
-	if ((fd1=PF_OpenFile(FILE1))<0){
-		PF_PrintError("open file1\n");
-		exit(1);
-	}
-	printf("opened file1\n");
+	if ((fd1 = PF_OpenFileEx(FILE1, PF_REPL_LRU)) < 0) {
+    PF_PrintError("open file1\n");
+    exit(1);
+}
+printf("opened file1 (LRU policy)\n");
 
-	if ((fd2=PF_OpenFile(FILE2))<0 ){
-		PF_PrintError("open file2\n");
-		exit(1);
-	}
-	printf("opened file2\n");
+if ((fd2 = PF_OpenFileEx(FILE2, PF_REPL_MRU)) < 0) {
+    PF_PrintError("open file2\n");
+    exit(1);
+}
+printf("opened file2 (MRU policy)\n");
+
 
 	/* get rid of records  1, 3, 5, etc from file 1,
 	and 0,2,4,6 from file2 */
@@ -292,7 +296,26 @@ int fd1,fd2;
 
 	/* print the hash table */
 	printf("hash table:\n");
-	PFhashPrint();
+PFhashPrint();
+
+printf("\n--- Buffer Statistics ---\n");
+PF_PrintStats();
+
+// -------------------- Write statistics to CSV --------------------
+FILE *fp = fopen("results.csv", "a");
+if (fp) {
+    fprintf(fp, "%d,%d,%d,%d,%d\n",
+        50,               // read ratio (you can adjust this per run)
+        logical_reads,
+        logical_writes,
+        physical_reads,
+        physical_writes);
+    fclose(fp);
+    printf("\n[Stats saved to results.csv]\n");
+} else {
+    printf("\n[Error: Could not write to results.csv]\n");
+}
+
 }
 
 

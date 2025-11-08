@@ -51,6 +51,7 @@ typedef struct PFbpage {
 	PFfpage fpage; /* page data from the file */
 } PFbpage;
 
+extern int PF_BUFFER_SIZE;   /* actual buffer pool size */
 
 
 /******************** Hash Table Decls ****************************/

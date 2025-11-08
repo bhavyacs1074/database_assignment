@@ -773,3 +773,10 @@ RETURN VALUE: none
 	else	fprintf(stderr,"\n");
 
 }
+void PF_SetBufferSize(int n)
+{
+    if (n > 0)
+        PF_BUFFER_SIZE = n;
+    else
+        fprintf(stderr, "Invalid buffer size. Must be > 0\n");
+}
