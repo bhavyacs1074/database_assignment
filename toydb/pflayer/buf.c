@@ -14,19 +14,12 @@ static PFbpage *PFfirstbpage= NULL;	/* ptr to first buffer page, or NULL */
 static PFbpage *PFlastbpage = NULL;	/* ptr to last buffer page, or NULL */
 static PFbpage *PFfreebpage= NULL;	/* list of free buffer pages */
 /* Statistics counters */
-<<<<<<< HEAD
 /* Statistics counters (extern-visible) */
 unsigned long logical_reads = 0;
 unsigned long logical_writes = 0;
 unsigned long physical_reads = 0;
 unsigned long physical_writes = 0;
 
-=======
-static unsigned long logical_reads = 0;
-static unsigned long logical_writes = 0;
-static unsigned long physical_reads = 0;
-static unsigned long physical_writes = 0;
->>>>>>> f85e77747cc48c2808fc4302372c0e959410e423
 
 extern char *malloc();
 
@@ -259,6 +252,7 @@ RETURN VALUE:
 GLOBAL VARIABLES MODIFIED:
 *****************************************************************************/
 {
+logical_reads++;
 PFbpage *bpage;	/* pointer to buffer */
 int error;
 
